@@ -1,0 +1,112 @@
+<style>
+    .clip{
+        overflow: clip;
+        width: 80vw;
+        margin-left: 15vw;
+        aspect-ratio: 16 / 8;
+        position: relative;
+        border: 2px solid blue;
+    }
+
+    .grid{
+        display: grid;
+        background-color: black;
+        position: absolute;
+        min-width: 100%;
+        min-height: 100%;
+    }
+
+    .sb-grid{
+        display: grid;
+        /* border: 1px solid white; */
+        height: 100%;
+        width: 100%;
+    }
+</style>
+<body style="overflow: clip;">
+    <div>
+        Horizontal Spacing:<input id="row-num" type="number" min="25" ><br>
+        Vertical Spacing:<input id="col-num" type="number" min="25" >
+        <div style="border: 1px solid blue;" onclick="create()">MAKE</div>
+    </div>
+    <div class="clip">
+        <div id="stickerbomb" class="grid"></div>
+    </div>
+</body>
+<script>
+    function create(){
+        //get grid element
+        stickerbomb = document.getElementById('stickerbomb');
+
+        //clear inner content
+        stickerbomb.innerHTML = "";
+
+        //get user-defined values
+        gridWidth = document.getElementById('row-num').value;
+        gridHeight = document.getElementById('col-num').value;
+
+        //width of gridPanel
+        wdth = stickerbomb.offsetWidth;
+        console.log('wdth :' + wdth);
+
+        // gets the offset width to the tenth value place
+        ww = (wdth - (wdth % 10));
+        // remove leftover with modulus and divide by user-defined width
+        ww = (ww - (ww % gridWidth)) / gridWidth;
+
+
+        // height of gridPanel
+        ht = (stickerbomb.offsetWidth)*(9/16);
+        console.log('ht :' + ht);
+
+        // gets height to the tenth value place
+        wh = (ht - (ht % 10));
+        // remove leftover with modulus and divide by user-defined width
+        wh = (wh - (wh % gridHeight)) / gridHeight;
+
+
+        //ww stands for working width
+        let columns = ww + 4;
+        console.log('ww :' + columns)
+
+        //wh means working height
+        let rows = wh + 3;
+        console.log('wh :' + rows);
+
+        stickerbomb.style.gridTemplateColumns = 'repeat('+ columns + ',' + gridWidth + 'px)';
+        stickerbomb.style.gridTemplateRows = 'repeat('+ rows + ',' + gridHeight + 'px)';
+        stickerbomb.style.marginTop = '-'+gridHeight+'px';
+        stickerbomb.style.marginLeft = '-'+(2*gridWidth)+'px';
+
+        //not in loop identifier so it only tuns once and not at the beginning of ever loop
+        var loop = rows * columns;
+        console.log(loop);
+        for(let i=0; i < loop; i++){
+            var gridtemp = document.createElement('div');
+            stickerbomb.appendChild(gridtemp);
+
+            // if(chaos){
+            //     z = Math.round(getRandom(0,50));
+            //     gridtemp.style.zIndex = z;
+            // }
+
+            var temp = document.createElement('img');
+            temp.setAttribute('class', 'sb-grid');
+            gridtemp.appendChild(temp);
+
+            // if(bordered){
+            //     temp.setAttribute('class', 'stickers')
+            // }
+
+            // if(setHeights){
+            //     //when using a set height, use slider value
+            //     temp.style.height = params[0];
+            // } else {
+            //     //when users want random height, otherwise use set height
+            //     temp.style.height = Math.round(params[0] * getRandom(0.1, 1));
+            // }
+        }
+
+        console.log(stickerbomb.childElementCount);
+    }
+</script>

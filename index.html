@@ -1,0 +1,103 @@
+<html lang="en">
+    <head></head>
+    <title> StickerFuse </title>
+    <link rel="stylesheet" href="style-6.css">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+</head>
+<body>
+    <div class="header">
+        <img class="main-logo" src="./images/logo-red-min.png" title="logo" />
+        <div class="menu-flex flex">
+            <div class="menu-options"><a href="index.html" class="menu-item">Home</a></div>
+            <div class="menu-options"><a href="stickerbomb.html" class="menu-item">Stickerbomb</a></div>
+            <div class="menu-options"><a href="extra.html" class="menu-item">Extra</a></div>
+        </div>
+    </div>
+    <div class="middle">
+        <div class="main-flex">
+            <div class="main-left">
+                <div class="main-title"><i>Sticker&nbsp;Fuse™ &nbsp;&nbsp;&nbsp;&nbsp;Premium&nbsp;Decals</i></div>
+                <div class="main-quote">A cult classic, reimagined. Now easily personalized.</div>
+                <img class="main-harold" src="" />
+            </div>
+            <div class="main-right">
+                <img class="hero-img" src="./images/sb-bottle.png" />
+                <div class="subtitle">Make your own!</div>
+            </div>
+        </div>
+
+        <div class="community-creations">
+            <div class="community-text">Community Creations</div>
+            <div class="community-grid">
+                <div>
+                    <div class="comm-create-name"></div>
+                </div>
+                <div>
+                    <div class="comm-create-name"></div>
+                </div>
+                <div>
+                    <div class="comm-create-name"></div>
+                </div>
+                <div>
+                    <div class="comm-create-name"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="shop-area">
+            <div class="bar-container">
+                <div class="showroom-bar">
+                    <div class="menu-options"><a href="stickerbomb.html" class="bar-item"><div>Stickerbomb</div></a></div>
+                    <div class="menu-options"><a href="" class="bar-item"><div>Stickers</div></a></div>
+                    <div class="menu-options"><a href="" class="bar-item"><div>Car Stickers</div></a></div>
+                    <div class="menu-options"><a href="" class="bar-item"><div>Merch</div></a></div>
+                </div>
+            </div>
+    
+            <div id="showroom" class="showroom grid-container">
+                <script type="text/javascript">
+                    function httpGet()
+                    {
+                        var xmlHttp = new XMLHttpRequest();
+                        xmlHttp.open( "GET", "./get-products.php", false ); // false for synchronous request
+                        xmlHttp.send( null );
+                        return xmlHttp.responseText;
+                    }
+                    
+                    document.getElementById("showroom").innerHTML=httpGet();
+                </script>
+                <div class="grid-item">
+                    <a class="product-items" href="">
+                        <img class="product-image" src="./images/test-image.jfif" title="$temp[0]" alt="$temp[3]" />
+                        <div class="product-name">$temp[0]</div>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a class="product-items" href="">
+                        <img class="product-image" src="./images/test-image2.jfif" title="$temp[0]" alt="$temp[3]" />
+                        <div class="product-name">$temp[0]</div>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a class="product-items" href="">
+                        <img class="product-image" src="./images/test-image.jfif" title="$temp[0]" alt="$temp[3]" />
+                        <div class="product-name">$temp[0]</div>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a class="product-items" href="">
+                        <img class="product-image" src="./images/test-image2.jfif" title="$temp[0]" alt="$temp[3]" />
+                        <div class="product-name">$temp[0]</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        
+
+    <div class="footer">
+        Copyright 2022
+    </div>
+</body>
+</html>

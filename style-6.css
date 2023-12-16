@@ -1,0 +1,476 @@
+:root{
+    --main-color: rgb(176, 28, 28);
+}
+
+div{
+/* border: 1px solid transparent; */
+    position: static;
+}
+
+a{
+    text-decoration: none;
+    height: 100%;
+}
+
+body{
+    margin: 0 8;
+    min-width: 400px;
+}
+
+html{
+    background-color: #2c2c2c;
+    color:white;
+    overflow-x: hidden;
+}
+
+body > *{
+    font-family: sans-serif;
+}
+
+.header{
+    display: flex;
+    justify-content:space-between !important;
+    height: 65px;
+    margin: -1% -1% 0 -1%;
+    padding: 1% 1% 0 1%;
+    background-color: rgba(0, 0, 0, 0.35);;
+}
+
+.middle{
+    margin: 0 -1% 0 -1%;
+    min-width: 400px;
+}
+
+.main-logo{
+    aspect-ratio: 4/1;
+    height:100%;
+    margin-top: 0px;
+}
+
+.main-title{
+    font-weight: 700;
+    font-size: 4.05rem;
+    margin-left: 8%;
+}
+
+.subtitle{
+    font-size: 2rem;
+    color:white;
+    font-weight: 700;
+    position:absolute;
+    bottom:0;
+    right:10%;
+}
+
+.main-quote{
+    margin-left: 16%;
+    font-size: 1.1rem;
+    position: absolute;
+    bottom: 10;
+}
+
+.main-flex{
+    display: flex;
+    justify-content: center;
+    aspect-ratio: 26/7;
+    padding: 20 0 0 0;
+    margin:  0 0 10 0;
+    background: 
+    -webkit-linear-gradient(-25deg, var(--main-color) 55%, rgba(135, 60, 255, 0.0) 70%);
+    overflow: clip;
+}
+
+.main-left{
+    width: 60%;
+    overflow-y: clip;
+    position: relative;
+}
+
+.main-right{
+    position: relative;
+    flex-grow: 1;
+    margin-left: -5%;
+}
+
+.hero-img{
+    position: absolute;
+    top: 0;
+    right: 5%;
+    width: 80%;
+    /* aspect-ratio: 1 / 1; */
+    /* -webkit-mask-image:-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0)); */
+}
+
+.flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-flex{
+    flex-direction: row;
+    margin: 0 10 0 0;
+}
+
+.menu-options{
+    flex-grow: 1;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-weight: 700;
+    border-radius: 10px;
+    background: linear-gradient(var(--main-color) , rgba(135, 60, 255, 0.0) 140%);
+    margin: 0 10;
+    transition: 325ms;
+}
+
+.menu-options:hover{
+    background: transparent;
+    backdrop-filter: invert(30%);
+}
+
+.menu-item{
+    color: white;
+    padding: 10;
+}
+
+.community-creations{
+    /* background-color: rgba(0, 0, 0, 0.35); */
+    padding-left: 1vw;
+    margin: 10px 0;
+}
+
+.community-text{
+    font-weight: 700;
+    text-align: center;
+    width: 100%;
+    /* margin-left: -4vw; */
+    padding: 10px 0;
+    font-size: 1.5em;
+}
+
+.community-grid{
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    padding: 0 10 10 10;
+}
+
+.community-grid > div{
+    border: 1px solid white;
+    margin: 10;
+    aspect-ratio: 4 / 3;
+    position: relative;
+}
+
+.comm-create-name{
+    position: absolute;
+    height:20px;
+    background-color:green;
+}
+
+.grid-container{
+    display: grid;
+}
+
+.showroom{
+    padding: 10 5vw 10 5vw;
+    margin: 0 0 50 0;
+    gap: 14px;
+    grid-template-columns: auto auto auto auto;
+}
+
+.product-items div{
+    color: white;
+    text-decoration: none;
+}
+
+.divider{
+    height: 3px;
+    margin: 0 5%;
+    flex-grow: 1;
+    background-color: aliceblue;
+    border-radius: 10px;
+}
+
+.bar-container{
+    display: flex;
+    justify-content: center;
+}
+
+.showroom-bar{
+    display: flex;
+    height: 50px;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10 0 10 0;
+}
+
+.bar-item{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 12;
+}
+
+.bar-item > div{
+    color: white;
+}
+
+.grid-item{
+    display: grid;
+    width: 98%;
+    border-radius: 10px;
+    /* box-shadow: 0px 0px 0px 3px rgba(210, 100, 10, 1); */
+    transition: 200ms;
+}
+
+.grid-item:hover{
+    scale: 1.03;
+}
+
+.grid-item:hover .product-name{
+    background: transparent;
+    backdrop-filter: invert(30%);
+}
+
+.product-image{
+    width:100%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    aspect-ratio: 16 / 9;
+}
+
+.product-name{
+    flex-grow: 1;
+    text-align: center;
+    background: linear-gradient(var(--main-color) , rgba(135, 60, 255, 0.0) 140%);
+    color: white !important;
+    padding: 0.6vw 0;
+    transition:ease-out 200ms;
+    border-bottom-left-radius: 9px;
+    border-bottom-right-radius: 9px;
+}
+
+.shop-area{
+    background-color: #333;
+    padding: 1vw 0;
+    margin: -1% 0 0 0;
+}
+
+.footer{
+    text-align: center;
+    background-color: black;
+    padding: 1vw 0;
+    margin: -3%;
+}
+
+/* Stickerbomb page-specific rules below ============================================================ */
+
+.help-panel{
+    position: absolute;
+    visibility: hidden;
+    height: 0;
+}
+
+.main-content{
+    margin: 0 1%;
+    display: grid;
+    grid-template-columns: 84% auto;
+}
+
+.left-bar{
+    position: relative;
+    margin-left: 5%;
+}
+
+.generate{
+    position:absolute;
+    bottom: 0;
+    left:0;
+    width: 100%;
+    height: 10%;
+    font-weight: 900;
+    margin: 0 !important;
+    cursor: pointer;
+}
+.create{
+    width: 100%;
+    text-align: center;
+    color: white;
+}
+
+.photo-bar{
+    position: absolute;
+    left:0;
+    top: 0;
+    height: 84%;
+    width: 99.9%;
+}
+
+.photo-scroll{
+    width: 100%;
+    height: 97%;
+    overflow-y: scroll;
+    overflow-x: clip;
+    margin-top: 2%;
+}
+
+.image-sources{
+    width: 89%;
+    padding: 5%;
+    /* border: 1px solid aliceblue; */
+    overflow: clip;
+}
+
+.right-side{
+    border: 1px solid aliceblue;
+}
+
+.file-button-box{
+    width: 100%;
+    height: 8%;
+}
+
+.file-style{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 !important;
+    cursor: pointer;
+}
+
+.file-style-2{
+    width: 100%;
+    color: white;
+    font-weight: 900;
+}
+
+.top-bar{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 12px 0;
+    position: relative;
+}
+
+.top-fit-flex{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.top-labels{
+    margin-top: 10px;
+    text-align: center;
+}
+
+.remove-buttons{
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: red;
+    font-size: 10;
+    font-weight: 900;
+    padding: 0 2;
+    cursor: pointer;
+}
+
+.hide-options{
+    position: absolute;
+    width: 101%;
+    height: 4%;
+    top: -4%;
+    left: -106%;
+    background-color: var(--main-color);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    color:white;
+    border: 0px solid black;
+    cursor: pointer;
+    transition: 125ms;
+}
+
+.hide-options:hover{
+    background: transparent;
+    backdrop-filter: invert(30%);
+}
+
+.options-panel{
+    width: 101%;
+    height: 100%;
+    position: absolute;
+    left:-106%;
+    background-color: rgba(0, 0, 0, 0.7);
+    overflow-y: overlay;
+    overflow-x: hidden;
+    text-align: center;
+    z-index: 51;
+}
+
+.slider{
+    cursor: pointer;
+    margin-top: 7px;
+    margin-bottom: 5px;
+}
+
+.slider::-webkit-slider-runnable-track{
+    background: darkorange;
+    height: 5px;
+    border-radius: 5px;
+}
+
+.slider::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    margin-top: -5px;
+    border-radius: 50%;
+}
+
+::-webkit-scrollbar {
+width: 20px;
+}
+
+::-webkit-scrollbar-track {
+background-color: rgba(0, 0, 0, 0);
+}
+
+::-webkit-scrollbar-thumb {
+background-color: #d6dee1;
+border-radius: 20px;
+border: 6px solid transparent;
+background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover { background-color: #a8bbbf; }
+
+::-webkit-scrollbar-corner { background: rgba(0,0,0,0); }
+
+::-webkit-file-upload-button{
+    position: relative !important;
+    color: orange;
+    width: 100%;
+}
+
+.stickers{
+    filter: drop-shadow(5px 0 0 white) 
+            drop-shadow(0 5px 0 white)
+            drop-shadow(-5px 0 0 white) 
+            drop-shadow(0 -5px 0 white);
+}
+
+/* EXTRA.html specific pieces below ================================================================ */
+
+.gotcha{
+    text-align: center;
+    font-size: 6em;
+    color: white;
+    padding: 50px -1%;
+    margin: 10px 0;
+    font-weight:900;
+    background-color: var(--main-color);
+
+}

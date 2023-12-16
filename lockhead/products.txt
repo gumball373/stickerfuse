@@ -1,0 +1,19 @@
+Name;
+./images/test-image.jfif;
+Hyperlink to Page;
+Description of Product;
+>
+Name;
+./images/test-image.jfif;
+Hyperlink to Page;
+Description of Product;
+>
+Name;
+./images/test-image.jfif;
+Hyperlink to Page;
+Description of Product;
+>
+Name;
+./images/test-image.jfif;
+Hyperlink to Page;
+Description of Product;

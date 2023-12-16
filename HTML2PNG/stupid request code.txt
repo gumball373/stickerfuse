@@ -1,0 +1,55 @@
+
+    // response.writeHead(200, {'Content-Type': 'text/html'})
+    // response.write('Thanks! Print Size:');
+
+    //handle pre-check requests
+    if (request.method == 'OPTIONS') {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "accept, text/html");
+        response.writeHead(200, response.getHeaders());
+    }
+
+    // request.
+
+    // console.log(request.method);
+
+    if (request.method == 'POST'){
+        console.log('working');
+	let allData = [];
+        request.on('data', function(data) {
+            jsonData = JSON.parse(data);
+            console.log(data);
+        })
+    // response.writeHead(200, {'Content-Type': 'text/html'})
+    
+
+        //     fs.writeFile(order+".txt", jsonData, function(err) {
+        //     if (err) {
+        //         console.log(err);
+        //     }
+        // });
+
+        request.on('end', function() {
+            // response.writeHead(200, {'Content-Type': 'text/html'})
+            response.end('post received')
+        })
+    }
+
+let allData = [];
+  // collect from all the data events here
+  python.stdout.on('data', data => {
+    allData.push(data.toString());
+  }).on('error', e => {
+     console.log(e);
+     res.sendStatus(500);
+  }).on('close', () => {
+     // we have all data now
+     let result = allData.join(allData, "");
+     if (result.startsWith('ERROR')) {
+        console.log(result);
+        res.sendStatus(500);
+     } else {
+        res.send(allData);
+     }
+  });

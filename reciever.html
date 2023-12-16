@@ -1,0 +1,113 @@
+<html style="overflow: visible !important;" lang="en">
+    <head></head>
+    <title> Full-Size </title>
+    <link rel="stylesheet" href="style-6.css">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+</head>
+<body>
+    <div id="new-clip" style="overflow: clip; background-color: black; position: relative;">
+        <div style="position: fixed; top: 0; left: 0; width: 300px; background-color: aliceblue; border: 2px solid black; z-index: 51; color: black; margin-left: 1%;">1 Inch</div>
+        <div id="content" style="display: flex; flex-direction: row; flex-wrap: wrap; margin-left: -3%; margin-right: 35%; padding-top: 3%; scale: 2;"></div>
+    </div>
+    <div id="grid-temp" style="display: flex; visibility: hidden;"></div>
+    <div id="content-temp" style="display: flex; flex-direction: row; scale: 2;"></div>
+</body>
+
+<script>
+    var viewport = document.getElementById('new-clip');
+    var placeholder = document.getElementById('grid-temp');
+    var content = document.getElementById('content');
+    var content_temp = document.getElementById('content-temp');
+
+    let size = window.sessionStorage.getItem('sb_print_size');
+    let sizes = size.split(':');
+    let dpi=sizes[0];
+    let wdth=sizes[1]*dpi;
+    let ht=sizes[2]*dpi;
+    console.log(sizes);
+
+    viewport.style.width = wdth+"px";
+    viewport.style.height = ht+"px";
+
+    let scale = 0;
+
+    if(dpi = 300){
+        scale = 2;
+    } else {
+        scale = 4;
+        content.style.scale = 4;
+        content_temp.style.scale = 4;
+    }
+
+    gridtext = window.sessionStorage.getItem('stickerbomb_grid');
+
+    placeholder.innerHTML = gridtext;
+    let sb=placeholder.firstElementChild;
+    let stickerRows = placeholder.firstElementChild;
+
+    runWidth = wdth/(50*scale);
+    runHeight = ht/placeholder.offsetHeight;
+
+    let s = 0;
+    let sources=[];
+
+    let j=0;
+    
+    create();
+
+    async function create(){
+        //add image sources to session
+        //clear old persisting data, to not cause issues
+        while(window.sessionStorage.getItem('sb_source_'+s) != null){
+            sources[s] = window.sessionStorage.getItem('sb_source_'+s);
+            s++;
+        }
+        
+        //one column at a time
+        // console.log(runHeight)
+        for(let r = 0; r < runHeight; r++){
+            // make rows
+            makeRows();
+
+            // content = viewport.appendChild(content_temp.cloneNode());//makes it look bad
+
+            // split these up to hopefully have update frames, each row will appear
+        }
+        // add images to rows
+        await addImages();
+
+        
+    }
+
+    //make row
+    async function makeRows(){
+        loop = runWidth + 1;
+        for (let i=0; i < loop; i++){
+            if(j > stickerRows.childElementCount - 1){ j=0; }
+            content.appendChild(stickerRows.children[j].cloneNode(true));//might need to clone whole grid and use em up before making a new one
+            j++;
+        }
+    }
+
+    async function addImages(){
+    //add images
+    let columns = content.childElementCount;
+    let rows = content.firstChild.childElementCount;
+    let column;
+    let child;
+    let number = 0;
+
+        for(let j=0; j < columns; j++){
+                //set a column to traverse
+                column = content.children[j];
+
+                for(let i = 0; i < rows; i++){
+                    //gets the div grid element, then the image element
+                    child = column.children[i].firstChild;
+
+                    number = child.getAttribute('pic');
+                    child.setAttribute('src', sources[number]);
+                }
+        }
+    }
+</script>

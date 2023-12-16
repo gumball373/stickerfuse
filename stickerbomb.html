@@ -1,0 +1,620 @@
+<html lang="en">
+    <head></head>
+    <title> StickerBomb </title>
+    <link rel="stylesheet" href="style-6.css">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+</head>
+
+<body>
+    <div class="help-panel">
+        FAQs
+    </div>
+    <div class="header">
+        <img class="main-logo" src="./images/logo-red.png" title="logo" />
+        <nav class="menu-flex flex">
+            <div class="menu-options"><a href="index.html" class="menu-item">Home</a></div>
+            <div class="menu-options"><a href="stickerbomb.html" class="menu-item">StickerBomb</a></div>
+            <div class="menu-options"><a href="extra.html" class="menu-item">Extra</a></div>
+            <div class="menu-options"><a href="" class="menu-item">Help</a></div>
+        </nav>
+    </div>
+    <div class="middle">
+        <div class="top-bar">
+            <div style="position: absolute; left: 0; top: 0; font-weight: 700; padding-left: 1%;">Welcome to our stickerbomb generator :D</div>
+            <div style="background-color: aliceblue; width: 150px; color: black;" onclick="sendOrder()">1 inch</div>
+        </div>
+        <div class="main-content">
+            <div class="right-side">
+                <div id="clip" style="overflow: clip; width: 100%; aspect-ratio: 16 / 8; background-color: black;">
+                    <div id="stickerbomb" style="display: flex; flex-direction: row; justify-content: center;"></div>
+                    <div id="new-stickers" style="display: flex; flex-direction: row; justify-content: center; width: 100%;"></div>
+                </div>
+            </div>
+            <div class="left-bar">
+                <button class="hide-options" onclick="toggleMenu()">Toggle Menu</button>
+                <div class="options-panel" id="options-panel">
+                    <div class="top-fit-flex">
+                        <label class="top-labels" for="density">Height:</label>
+                        <input type="range" min="50" max="300" value="175" class="slider" id="density">
+                    </div>
+                
+                    <div class="top-fit-flex">
+                        <label class="top-labels" for="skew">Skew:</label>
+                        <input type="range" min="0" max="100" value="50" class="slider" id="skew">
+                    </div>
+                
+                    <div class="top-fit-flex">
+                        <label class="top-labels" for="roation">Rotation:</label>
+                        <input type="range" min="0" max="10" value="5" class="slider" id="rotation">
+                    </div>
+                
+                    <div class="top-fit-flex">
+                        <label class="top-labels" for="set-height">Randomized Heights?</label>
+                        <input type="checkbox" id="random-heights" name="random-heights">
+                    </div>
+                    
+                    <div class="top-fit-flex">
+                        <label class="top-labels" for="chaos">Chaos Mode?</label>
+                        <input type="checkbox" id="chaos" name="chaos" checked="true" onclick="flex_none('rts?')">
+                    </div>
+
+                    <div id="rts?" class="top-fit-flex" style="display: none;">
+                        <label class="top-labels" for="no-new">Remove Top Stickers?</label>
+                        <input type="checkbox" id="no-new" name="no-new" onclick="flex_none('new-stickers')">
+                    </div>
+
+                    <div class="top-fit-flex">
+                        <label class="top-labels" for="bordered">Add Border? (Experimental)</label>
+                        <input type="checkbox" id="bordered" name="bordered">
+                    </div>
+                    <br>
+                    Print Settings:<br>
+                    <div class="top-fit-flex">
+                            <label class="top-labels" for="wdth">Print Width</label>
+                            <input type="number" min="3" value="12" max="24" id="wdth" name="wdth" style="width: 80%;">
+                    </div>
+
+                    <div class="top-fit-flex">
+                            <label class="top-labels" for="ht">Print Height</label>
+                            <input type="number" min="5" value="12" max="36" id="ht" name="ht" style="width: 80%; margin-bottom: 4px;">
+                    </div>
+                    Max: 24 x 36 (in)
+                    <br>
+                    <br>
+
+                    <div class="top-fit-flex">
+                        <div class="top-labels" style="width: 100%;">
+                            Print Quality:<br>
+                            <div onclick="document.getElementById('high').click();">
+                                <label class="top-labels" for="high">High</label>
+                                <input type="radio" id="high" name="dpi" value="300" checked="true">
+                            </div>
+                            <div onclick="document.getElementById('higher').click();">
+                                <label class="top-labels" for="higher">Higher($)</label>
+                                <input type="radio" id="higher" name="dpi" value="600">
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                    <div style="cursor: pointer;" onclick="printSize()">See Full Size<br>(Resource Intensive)</div>
+                    <br> <!-- padding for bottom of options panel -->
+                </div>
+                <div class="photo-bar">
+                    <div class="file-button-box">
+                        <button class="file-style menu-options" onclick="document.getElementById('new-file').click()"><div class="file-style-2">Add&nbsp;Sticker</div></button>
+                        <input style='width:0px' type=file name=new-file id=new-file onchange='openFile(event)' accept='image/png'>
+                    </div>
+                    <div class="photo-scroll" id="images-used">
+                    </div>
+                </div>
+                <button id="generate" class="generate menu-options" onclick="createStickerbomb()"><div class="create">Create!</div></button>
+            </div>
+        </div>
+    </div>
+</body>
+
+    <script type="text/javascript">
+    //useful info https://stackoverflow.com/questions/6840326/how-can-i-create-and-style-a-div-using-javascript
+
+    // fetch("./products.txt").then((r)=>{r.text().then((d)=>{let CONTENT = d; console.log(CONTENT);})})
+
+    let chaos = true;
+
+    var r =0;
+    let sources = [];
+    var stickerbomb = document.getElementById('stickerbomb');
+    var topstickers = document.getElementById('new-stickers');
+    var clip = document.getElementById('clip');
+    var options = document.getElementById('options-panel');
+    var gridOnly;
+
+    var openFile = function(file) {
+
+        var input = file.target;
+        var reader = new FileReader();
+        reader.onload = function(){
+            //create element with numbered id
+            let temp = document.createElement('img');
+            let tempname = 'output'+r;
+            // console.log(tempname);
+            temp.setAttribute('id', tempname);
+
+            //set height to contrain, and class to collect later
+            temp.setAttribute('class', 'image-sources');
+
+            //create a box to hole the image an the close button
+            let temp3 = document.createElement('div');
+            temp3.style.position = 'relative';
+            temp3.style.width = '100%';
+
+            //append the image
+            temp3.appendChild(temp);
+
+            //create a new element for the close button
+            let temp2 = document.createElement('div');
+            temp2.setAttribute('class', 'remove-buttons');
+            temp2.style.fontSize = '0.75rem';
+            temp2.textContent='X';
+
+            //create remove attribute on the sticker, and removes it from sources
+            temp2.setAttribute('onClick', 'removeSticker(this)');
+
+            //append the close button
+            temp3.appendChild(temp2);
+
+            //append the temp3 conatiner to the image panel
+            temp2 = document.getElementById('images-used');
+            temp2.appendChild(temp3);
+            r++;
+
+            var dataURL = reader.result;
+            var output = document.getElementById(tempname);
+            output.src = dataURL;
+        };
+        reader.readAsDataURL(input.files[0]);
+        // console.log(input.files[0].name);
+    };
+
+    function getSources(){
+        let s = 0;
+        //clear old persisting data, to not cause issues
+        while(window.sessionStorage.getItem('sb_source_'+s) != null){
+            window.sessionStorage.removeItem('sb_source_'+s);
+            s++;
+        }
+        window.sessionStorage.removeItem('stickerbomb_grid');
+        window.sessionStorage.removeItem('sb_print_size');
+
+        let temps = [];
+        //collect the style.src elements of each image in images-used
+        temps = document.getElementsByClassName('image-sources');
+        for(let i=0; i < temps.length; i++){
+            sources[i] = temps[i].src;
+            window.sessionStorage.setItem('sb_source_'+i, temps[i].src);
+        }
+        // console.log(sources);
+        return sources;
+    }
+
+    function getStoredSources(){
+        let s = 0;
+        let storedSources = [];
+        let sourceDummy = [];
+        //clear old persisting data, to not cause issues
+        while(window.sessionStorage.getItem('sb_source_'+s) != null){
+            storedSources[s] = window.sessionStorage.getItem('sb_source_'+s);
+            sourceDummy[s] = ""+s; //window.sessionStorage.getItem('sb_source_'+s)
+            s++;
+        }
+        return storedSources;
+    }
+
+    function removeSticker(element){
+        //get container
+        element = element.parentNode;
+        //get image in container
+        element = element.firstChild;
+        //remove source from array, dont leave an empty spot
+        let text = element.getAttribute('src');
+        for(let i = 0; i < sources.length; i++){
+            if(sources[i] == text){
+                sources.splice(i, 1);
+            }
+        }
+        //get conatiner to remove entire thing
+        element = element.parentNode;
+        element.remove();
+    }
+
+    function flex_none(elem_id){
+        elem = document.getElementById(elem_id);
+        if(elem.style.display != 'flex')
+        {
+            elem.style.display = 'flex';
+        } else {
+            elem.style.display = 'none';
+        }
+    }
+
+    function toggleMenu(){
+        if(options.style.visibility == 'hidden'){
+            options.style.visibility = 'visible';
+        } else {
+            options.style.visibility = 'hidden';
+        }
+    }
+
+    function printSize(){
+        let dpi = document.querySelector('input[name=dpi]:checked').value;
+        let wdth = document.getElementById('wdth').value;
+        let ht = document.getElementById('ht').value;
+
+        window.sessionStorage.setItem('sb_print_size', ""+dpi+":"+wdth+":"+ht);
+        // window.open('reciever.html','_blank');
+    }
+
+    function sendOrder(){
+        printSize();
+        //collect all data before sending to the server
+        var data = String.raw`{data : ${window.sessionStorage.getItem('stickerbomb_grid') + '~~~'
+        + window.sessionStorage.getItem('sb_print_size') + '~~~'
+        + getStoredSources()}}`;
+
+        //eventuall move this to AFTER the user pays
+        var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+        var theUrl = "./order.php"; //send text data through post to PHP
+        xmlhttp.open('POST', theUrl);
+        xmlhttp.setRequestHeader("Content-Type", "text/plain");
+        xmlhttp.send(data);
+    }
+
+    //create several rotations and xy(z-index) values spread out over th page size, build and find out
+    function getSliderValues(){
+        let density = document.getElementById('density');
+        let skew = document.getElementById('skew');
+        let rotation = document.getElementById('rotation');
+
+        //console.log("slider values:" + [density.value, skew.value, rotation.value]);
+        return [density.value, skew.value, rotation.value];
+    }
+
+    function getRandom(min, max) {
+        return Math.random() * (max - min) + min;
+    }
+
+    //sources = the uploaded source images
+    function createStickerbomb() {
+        //creates the image grid that contains all rotation/translation data
+        createGrid();
+        //collect to send to reciever
+        gridOnly = clip.innerHTML;
+        // console.log(gridOnly);
+        window.sessionStorage.setItem('stickerbomb_grid', gridOnly);
+
+        //add the images by pic number to
+        addImages();
+    }
+
+    function createGrid(){
+        sources = getSources();
+
+        //reomve all previous items
+        stickerbomb.innerHTML = "";
+        topstickers.innerHTML = "";
+
+        //check for options
+        var setHeights = !document.querySelector('#random-heights').checked;
+        var bordered = document.querySelector('#bordered').checked;
+        var noNew = !document.querySelector('#no-new').checked;
+        chaos = document.querySelector('#chaos').checked;
+        // console.log(setHeights);
+        // console.log(ordered);
+
+        //create temporary grid objects
+        var gridtemp = document.body;
+        var rowtemp = document.body;
+        var temp = document.body;
+
+        //debug source placeholder
+        // sources = [
+        // './images/1200px-NASA_Worm_logo.svg.png',
+        // './images/nasa-logo-png-transparent.png',
+        // './images/NASA_logo.svg.png'
+        // ];
+
+        //console.log('sources: ' + sources)
+
+        //no need for a second parameter
+        let items = sources.length;
+        //console.log("items:" + items);
+
+        //0 is density of items, 1 is skew multiplier, 2 is roation modifier
+        let params = getSliderValues();
+        //console.log('density: '+ params[0]);
+
+        let source = "";
+        let x = 0;
+        let y = 0;
+        // let z = 0;
+        let neg = 0;
+
+        let left = 0;
+        let top = 0;
+
+        /*let sum = 0;
+        let avg = 0;
+
+        //use the source widths to calculate the necessary grid dimensions
+        //grid x is how many times the loop placing images runs before finising a line
+        for(let i=0; i < sources.length; i++){
+            sum = sum + sources[i].naturalWidth;
+            //console.log('img '+i+' width: ' + sources[i].naturalWidth);
+        }
+        //Average Width of the photos
+        avg = sum / sources.length;
+        let columnCount = Math.round(stickerbomb.offsetWidth / avg) + 2;
+
+        //set these back to zero to use again
+        sum = 0;
+        avg = 0;
+        //grid y is how many times that loop breaks and starts a new line
+        for(let i=0; i < sources.length; i++){
+            sum = sum + sources[i].naturalHeight;
+        }
+        //Average Width of the photos
+        avg = sum / sources.length;*/
+        let rowCount = Math.round(stickerbomb.offsetWidth*(9/16) / 20);
+
+        //all images set to 100x100, so loop div width divided by 100 plus 2
+        let columnCount = Math.round(stickerbomb.offsetWidth / 100);
+
+        //make a 10 by 2 grid, use each cell to place a new sticker in to new stickers
+        //reuse grid and row temp, but adjust the loop lengths to secific integers
+
+        //each row
+        for(let j = 0; j < rowCount; j++){
+            rowtemp = document.createElement('div');
+            rowtemp.style.marginTop = '-50px'
+            if(chaos){
+                z = Math.round(getRandom(0,50));
+                rowtemp.style.zIndex = z;
+            }
+
+            //for each line run images across
+            for(let i =0; i < columnCount + 3; i++) {
+                //create a grid
+                gridtemp = document.createElement('div');
+                gridtemp.style.width = 50;
+                gridtemp.style.height = 50;
+
+                if(chaos){
+                    z = Math.round(getRandom(0,50));
+                    gridtemp.style.zIndex = z;
+                }
+
+                //append to stickerbomb to add to grid
+                // rowtemp.appendChild(gridtemp);
+
+                //create child per item, w/ random values taken into account
+                temp = document.createElement('img');
+                if(bordered){
+                temp.setAttribute('class', 'stickers')
+                }
+
+                //hardcode width and height for now, might add a slider
+                if(setHeights){
+                    //when using a set height, use slider value
+                    temp.style.height = params[0];
+                } else {
+                    //when users want random height, otherwise use set height
+                    temp.style.height = Math.round(params[0] * getRandom(0.1, 1));
+                }
+
+                //set left margin
+                // left = i * params[0] * 0.1;
+                // temp.style.marginLeft = ''+left+'px';
+
+                // //set top margin
+                // top = j * params[0] * 0.1;
+                // temp.style.marginTop = ''+top+'px';
+
+                //TODO create an "ordered" checkbox that places the images in order if checked, rand otherwise
+                //choose from sources
+                
+                //orginal method added images immediately, going to split things up
+                // source = sources[Math.ceil(getRandom(0, items) - 1)];
+                // temp.setAttribute('src', source);
+
+                //get the index for the photo to be added later
+                source = Math.ceil(getRandom(0, items) - 1)
+                temp.setAttribute('pic', source);
+                temp.setAttribute('src', "");
+
+                //create random z index, to add variation
+                // z = Math.round(getRandom(0,50));
+                //console.log("z-index: " + z);
+                // temp.style.zIndex = z;
+
+                //random xy skew values, 0-0.5 multiplied by the 0-100 slider on the generate page, translateX and translateY
+                x = Math.round(getRandom(0,0.5) * params[1]) * -3;
+                //using 0-2 rand and dividing by 2 because it makes it more chaotic and less prediactble
+                neg = Math.round(getRandom(0,2) / 2) * - 1;
+                // //console.log('neg: ' + neg);
+                // //decide if negative
+                if(neg){
+                    x = x * neg;
+                }
+                //print after deciding if negative
+                //console.log("X skew: " + x);
+
+                //
+                y = Math.round(getRandom(0,0.5) * params[1]) * -1;
+                //decide if negative
+                neg = Math.round(getRandom(0,2) / 2) * - 1;
+                // //console.log('neg: ' + neg);
+                if(neg){
+                    y = y * neg;
+                }
+                //print after deciding if negative
+                //console.log("Y skew: " + y);
+
+                //random rotation, 0-359deg, transform rotate(value)
+                rot = Math.round(getRandom(0,360) * params[2] * 0.1);
+                // console.log("Rotation: " + rot);
+
+                //set transform all at once
+                temp.style.transform = 'rotate('+ rot +'deg) translate('+ x +'px, '+ y+'px)';
+                //temp.style.transform = '';
+                
+                //chaos mode?? makes all values more chaotic and have larger implications
+                
+                //place in grid-view, generated depending on size, T&E for best solution
+                gridtemp.appendChild(temp);
+                rowtemp.appendChild(gridtemp);
+            }
+            stickerbomb.appendChild(rowtemp);
+        }
+
+        
+        //create grid sizes outside loop to use less resources
+        // let topGridW = Math.round(topstickers.style.offsetWidth / 5);
+        // let topGridH = Math.round(topstickers.style.offsetWidth*(9/16) / 2);
+        // console.log(Math.round(topstickers.style.offsetWidth*(9/16) / 2));
+
+        //create new 5 x 2 grid to put stickers on top so they are completely visible, should look better
+        if(!chaos){
+        for(let j = 0; j < 5; j++){
+            rowtemp = document.createElement('div');
+            rowtemp.style.width  = '20%';
+            rowtemp.style.display = 'flex';
+            rowtemp.style.flexDirection = 'column';
+            rowtemp.style.alignItems = 'center';
+
+            //for each line run images across
+            for(let i =0; i < 3; i++) {
+                //create a grid
+                gridtemp = document.createElement('div');
+                gridtemp.style.height = '33%';
+                // console.log('H: ' + topGridH + ' W: ' + topGridW);
+                // gridtemp.style.width = topGridW;
+                // gridtemp.style.height = topGridH;
+
+                //append to stickerbomb to add to grid
+                // rowtemp.appendChild(gridtemp);
+
+                //create child per item, w/ random values taken into account
+                temp = document.createElement('img');
+                if(bordered){
+                temp.setAttribute('class', 'stickers')
+                }
+
+                if(setHeights){
+                    //when using a set height, use slider value
+                    temp.style.height = params[0];
+                } else {
+                    //when users want random height, otherwise use set height
+                    temp.style.height = Math.round(params[0] * getRandom(0.1, 1));
+                }
+
+                //TODO create an "ordered" checkbox that places the images in order if checked, rand otherwise
+                //choose from sources
+                
+                //orginal method added images immediately, going to split things up
+                // source = sources[Math.ceil(getRandom(0, items) - 1)];
+                // temp.setAttribute('src', source);
+
+                //get the index for the photo to be added later
+                source = Math.ceil(getRandom(0, items) - 1)
+                temp.setAttribute('pic', source);
+
+                //create random z index, 0-itemAmount
+                // z = Math.round(getRandom(0,50));
+                //console.log("z-index: " + z);
+                // temp.style.zIndex = z;
+
+                //random xy skew values, 0-0.5 multiplied by the 0-100 slider on the generate page, translateX and translateY
+                x = Math.round(getRandom(0,0.5) * params[1]) * 3;
+                //console.log("X skew: " + x);
+                //decide if negative
+                neg = Math.round(getRandom(0,2) / 2) * - 1;
+                //console.log('neg: ' + neg);
+                if(neg){
+                    x = x * neg;
+                }
+
+                y = Math.round(getRandom(0,0.5) * params[1]);
+                //console.log("Y skew: " + y);
+                //decide if negative
+                neg = Math.round(getRandom(0,2) / 2) * - 1;
+                //console.log('neg: ' + neg);
+                if(neg){
+                    y = y * neg;
+                }
+
+                //random rotation, 0-360deg, transform rotate(value)
+                rot = Math.round(getRandom(0,360) * 0.1) % 45 * params[2];
+                
+                //decide if negative
+                neg = Math.round(getRandom(0,2) / 2) * - 1;
+                //console.log('neg: ' + neg);
+                if(neg){
+                    rot = rot * neg;
+                }
+                //console.log("Rotation: " + rot);
+
+                //set transform all at once
+                temp.style.transform = 'rotate('+ rot +'deg) translate('+ x +'%, '+ y +'%)';
+                //temp.style.transform = '';
+                
+                //chaos mode?? makes all values more chaotic and have larger implications
+                
+                //place in grid-view, generated depending on size, T&E for best solution
+                gridtemp.appendChild(temp);
+                rowtemp.appendChild(gridtemp);
+            }
+            topstickers.appendChild(rowtemp);
+        }
+
+        topstickers.style.marginTop = stickerbomb.offsetHeight * -1;
+        topstickers.style.height = stickerbomb.offsetHeight;
+        }
+        options.style.visibility = 'hidden';
+    }
+
+    function addImages(){
+        // sources = getSources();
+        let columns = stickerbomb.childElementCount;
+        let rows = stickerbomb.firstChild.childElementCount;
+        let column;
+        let child;
+        let number = 0;
+
+        for(let j=0; j < columns; j++){
+            //set a column to traverse
+            column = stickerbomb.children[j];
+
+            for(let i = 0; i < rows; i++){
+                //gets the div grid element, then the image element
+                child = column.children[i].firstChild;
+
+                number = child.getAttribute('pic');
+                child.setAttribute('src', sources[number]);
+            }
+        }
+        if(!chaos){
+            //do top-stickers too
+            for(let j=0; j < 5; j++){
+                //set a column to traverse
+                column = topstickers.children[j];
+
+                for(let i = 0; i < 3; i++){
+                    //gets the div grid element, then the image element
+                    child = column.children[i].firstChild;
+
+                    number = child.getAttribute('pic');
+                    child.setAttribute('src', sources[number]);
+                }
+            }
+        }
+    }
+</script>
